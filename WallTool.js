@@ -215,7 +215,7 @@ async onToolClick(context, event){
 		
 		// Get Tool Metadata if it exists
 		  const metadata_tool =  await OBR.tool.getMetadata(`${MyID}/tool`);
-			console.log(metadata_tool.strokeWidth_W);
+			
 					
 		   let strokeColor_W = "red"; 
 		  if (typeof metadata_tool.strokeColor_W === "string") {
