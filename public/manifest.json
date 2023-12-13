@@ -1,0 +1,9 @@
+{
+  "name": "OB Walled In",
+  "version": "0.1.0",
+  "manifest_version": 1,
+  "author": "CWS",
+  "icon": "/stonewall.png",
+    "background_url": "/",
+  "description": "Tool to add Walls for Smoke Extension"
+}
