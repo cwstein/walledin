@@ -19,6 +19,18 @@ export function createTool() {
       },	
     ],
 
+    defaultMetadata: {
+      //strokeColor: "red",
+	  strokeColor_L: "red",
+	  strokeWidth_L: 8,
+	  strokeColor_W: "red", 
+	  strokeWidth_W: 8,
+	  strokeColor_D: "green",
+	  strokeWidth_D: 8,
+	  strokeColor_SD: "purple",
+      strokeWidth_SD: 8,
+    },
+
   });
 }
 /* ================================== */

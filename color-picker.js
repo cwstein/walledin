@@ -158,7 +158,7 @@ async function setColor(a){
  async function onInput(e) {
 		
     const inputValue = parseInt((e.target).value);
-console.log(inputValue);
+//console.log(inputValue);
 	const controlin=event.srcElement.id
 	
 	OBR.tool.setMetadata(`${MyID}/tool`, { strokeWidth_L: inputValue });

@@ -361,7 +361,7 @@ OBR.onReady(async () => {
 	
 	 //Assign Event Listener to numeric inputs
 	const elements_input = document.getElementsByClassName("input50");
-	console.log(elements_input.length)
+	//console.log(elements_input.length)
 	for (let i = 0; i < elements_input.length; i++) {
 		elements_input.item(i).addEventListener("focusout", onInput);
 	}
@@ -419,7 +419,7 @@ async function setColor(a){
  async function onInput(e) {
 		
     
-	console.log("onInput");
+	//console.log("onInput");
 	//const controlin=event.srcElement.id
 	
 	//OBR.tool.setMetadata(`${MyID}/tool`, { strokeWidth_W: inputValue });
