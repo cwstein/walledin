@@ -156,7 +156,7 @@ async onToolClick(context, event){
 		
 		if (interaction_c&&KE.key=="Escape") {
 			stop();
-			stopl();	
+	
 		}
 	  	  
 	   if (interaction_c&&KE.key=="Enter") {
@@ -748,6 +748,7 @@ export function createObstruction() {
  			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
 
 			const curve = update((curve) => {
+				curve.points.pop();
 				curve.points.push(currentPos);
 				curve.points.push(startPos);
             });
