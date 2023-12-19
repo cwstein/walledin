@@ -22,6 +22,7 @@ OBR.onReady(async () => {
 		  <input
 			type="number"
 			id="strokeWidthW_Value"
+			name="wall"
 			inputmode="numeric"
 			value=8
 			min="1"
@@ -375,16 +376,13 @@ OBR.onReady(async () => {
 	inputWall.setAttribute('value', metadata.strokeWidth_W );
 
 	var inputDoor = document.getElementById("strokeWidthD_Value");
-	inputDoor.setAttribute('value', metadata.strokeWidth_W );
+	inputDoor.setAttribute('value', metadata.strokeWidth_D );
 
 	var inputSDoor = document.getElementById("strokeWidthSD_Value");
-	inputSDoor.setAttribute('value', metadata.strokeWidth_W );
+	inputSDoor.setAttribute('value', metadata.strokeWidth_SD );
 
 	var inputOb = document.getElementById("strokeWidthOb_Value");
-	inputOb.setAttribute('value', metadata.strokeWidth_W );	
-	
-	
-	
+	inputOb.setAttribute('value', metadata.strokeWidth_Ob );	
 	
 	
 });
@@ -419,7 +417,7 @@ async function setColor(a){
  async function onInput(e) {
 		
     
-	//console.log("onInput");
+	console.log("onInput");
 	//const controlin=event.srcElement.id
 	
 	//OBR.tool.setMetadata(`${MyID}/tool`, { strokeWidth_W: inputValue });
@@ -446,10 +444,6 @@ async function setColor(a){
 	{
 		OBR.tool.setMetadata(`${MyID}/tool`, { strokeWidth_Ob: inputValue });
 	} 
-	
-	
-	
-	
 	
 	
  } //End Function

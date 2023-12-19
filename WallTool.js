@@ -36,8 +36,8 @@ export function createTool() {
 /* ================================== */
 export function createLine() {
   let interaction_c= null;
-  let interaction_l=null;
   let currentPos = null;
+  let justclicked=false;
 
   OBR.tool.createMode({
     id: `${MyID}/modeline`,
@@ -53,7 +53,7 @@ export function createLine() {
 
 //---------------
 async onToolClick(context, event){
-
+	justclicked=true;
  
 	if (!interaction_c)
 	{
@@ -95,16 +95,7 @@ async onToolClick(context, event){
 
 		// Start an interaction with the new line
 		interaction_c = await OBR.interaction.startItemInteraction(curve);
-	 	 
-		// Build a line with the start and end position of our pointer
-		const line = buildLine()
-			.startPosition(currentPos)
-			.endPosition(currentPos)
-			.strokeColor(strokeColor_L)
-			.strokeWidth(strokeWidth_L)
-			.build();
-		// Start an interaction with the new line
-		interaction_l = await OBR.interaction.startItemInteraction(line);
+
 		}
 		else
 		{
@@ -112,25 +103,25 @@ async onToolClick(context, event){
  			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
 
 			update((curve) => {
+				curve.points.pop();
 				curve.points.push(currentPos);
             });
 			
-		if (interaction_l) {
-			const [update] = interaction_l;
-			update((line) => {
-				line.startPosition = currentPos;
-				});
-			}
 		}
 },
 //---------------
   async onToolMove(_, event) {
       // Update the end position of the interaction when the tool drags
-      if (interaction_l) {
-        const [update] = interaction_l;
-        update((line) => {
-          line.endPosition = event.pointerPosition;
-				});
+      if (interaction_c) {
+        const [update] = interaction_c;
+			update((curve) => {
+				if (justclicked==false)
+				{
+					curve.points.pop();
+				};
+				curve.points.push(event.pointerPosition);
+				justclicked=false;
+			});
 			}
 		},//End onToolMove
 
@@ -151,12 +142,9 @@ async onToolClick(context, event){
         // can interact with our new line
         stop();
 		
-	    const [updatel, stopl] = interaction_l;
-		stopl();		
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
 
 		},//End onToolDoubleClick
 
@@ -165,7 +153,6 @@ async onToolClick(context, event){
       // Stop the interaction early if we cancel the by pressing Esc
       // Complete if Enter is Pressed
 		const [update, stop] = interaction_c;
-		const [updatel, stopl] = interaction_l;
 		
 		if (interaction_c&&KE.key=="Escape") {
 			stop();
@@ -182,15 +169,11 @@ async onToolClick(context, event){
         OBR.scene.items.addItems([curve]);
         // Make sure we stop the interaction so others
         // can interact with our new line
-        stop();
-		stopl();		
+        stop();	
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
     },
-
-
 
   });
 }// End createLine
@@ -198,8 +181,8 @@ async onToolClick(context, event){
 
 export function createWall() {
   let interaction_c= null;
-  let interaction_l=null;
   let currentPos = null;
+  let justclicked=false;
 
   OBR.tool.createMode({
     id: `${MyID}/modewall`,
@@ -217,17 +200,16 @@ export function createWall() {
 //---------------
 async onToolClick(context, event){
 
-	// Get the stroke color from the tools metadata
 
-
+	justclicked=true;
  
 	if (!interaction_c)
 	{
-		let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
+		
 		
 		// Get Tool Metadata if it exists
 		  const metadata_tool =  await OBR.tool.getMetadata(`${MyID}/tool`);
-			
+			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
 					
 		   let strokeColor_W = "red"; 
 		  if (typeof metadata_tool.strokeColor_W === "string") {
@@ -260,16 +242,7 @@ async onToolClick(context, event){
 
 		// Start an interaction with the new line
 		interaction_c = await OBR.interaction.startItemInteraction(curve);
-	 	 
-		// Build a line with the start and end position of our pointer
-		const line = buildLine()
-			.startPosition(currentPos)
-			.endPosition(currentPos)
-			.strokeColor(strokeColor_W)
-			.strokeWidth(strokeWidth_W)
-			.build();
-		// Start an interaction with the new line
-		interaction_l = await OBR.interaction.startItemInteraction(line);
+
 		}
 		else
 		{
@@ -277,27 +250,29 @@ async onToolClick(context, event){
  			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
 
 			update((curve) => {
+				curve.points.pop();
 				curve.points.push(currentPos);
             });
 			
-		if (interaction_l) {
-			const [update] = interaction_l;
-			update((line) => {
-				line.startPosition = currentPos;
-				});
-			}
 		}
 },
 //---------------
     async onToolMove(_, event) {
       // Update the end position of the interaction when the tool drags
-      if (interaction_l) {
-        const [update] = interaction_l;
-        update((line) => {
-          line.endPosition = event.pointerPosition;
-				});
-			}
-		},//End onToolMove
+      if (interaction_c) {
+        const [update] = interaction_c;
+
+			update((curve) => {
+				if (justclicked==false)
+				{
+					curve.points.pop();
+				};
+				curve.points.push(event.pointerPosition);
+				justclicked=false;
+			});
+	  };
+			
+	},//End onToolMove
 
 //---------------
     async onToolDoubleClick(_, event) {
@@ -316,12 +291,9 @@ async onToolClick(context, event){
         // can interact with our new line
         stop();
 		
-	    const [updatel, stopl] = interaction_l;
-		stopl();		
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
 
 		},//End onToolDoubleClick
 
@@ -330,11 +302,10 @@ async onToolClick(context, event){
       // Stop the interaction early if we cancel the by pressing Esc
       // Complete if Enter is Pressed
 		const [update, stop] = interaction_c;
-		const [updatel, stopl] = interaction_l;
+
 		
 		if (interaction_c&&KE.key=="Escape") {
 			stop();
-			stopl();	
 		}
 	  	  
 	   if (interaction_c&&KE.key=="Enter") {
@@ -350,12 +321,12 @@ async onToolClick(context, event){
         // Make sure we stop the interaction so others
         // can interact with our new line
         stop();
-		stopl();		
+
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
-    },
+
+    },//end keydown
 
 
 
@@ -366,8 +337,8 @@ async onToolClick(context, event){
 
 export function createDoor() {
   let interaction_c= null;
-  let interaction_l=null;
   let currentPos = null;
+    let justclicked=false;
   
   OBR.tool.createMode({
     id: `${MyID}/modedoor`,
@@ -385,7 +356,7 @@ export function createDoor() {
 	
 	async onToolClick(context, event){
 
-	// Get the stroke color from the tools metadata
+	justclicked=true;
  
 	if (!interaction_c)
 	{
@@ -426,15 +397,6 @@ export function createDoor() {
 		// Start an interaction with the new line
 		interaction_c = await OBR.interaction.startItemInteraction(curve);
 	 	 
-		// Build a line with the start and end position of our pointer
-		const line = buildLine()
-			.startPosition(currentPos)
-			.endPosition(currentPos)
-			.strokeColor(strokeColor_D)
-			.strokeWidth(strokeWidth_D)
-			.build();
-		// Start an interaction with the new line
-		interaction_l = await OBR.interaction.startItemInteraction(line);
 		}
 		else
 		{
@@ -442,27 +404,29 @@ export function createDoor() {
  			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
 
 			update((curve) => {
+				curve.points.pop();
 				curve.points.push(currentPos);
             });
 			
-		if (interaction_l) {
-			const [update] = interaction_l;
-			update((line) => {
-				line.startPosition = currentPos;
-				});
-			}
 		}
 },
 //---------------
     async onToolMove(_, event) {
       // Update the end position of the interaction when the tool drags
-      if (interaction_l) {
-        const [update] = interaction_l;
-        update((line) => {
-          line.endPosition = event.pointerPosition;
-				});
-			}
-		},//End onToolMove
+      if (interaction_c) {
+        const [update] = interaction_c;
+
+			update((curve) => {
+				if (justclicked==false)
+				{
+					curve.points.pop();
+				};
+				curve.points.push(event.pointerPosition);
+				justclicked=false;
+			});
+	  };
+			
+	},//End onToolMove
 
 //---------------
     async onToolDoubleClick(_, event) {
@@ -481,12 +445,9 @@ export function createDoor() {
         // can interact with our new line
         stop();
 		
-	    const [updatel, stopl] = interaction_l;
-		stopl();		
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
 
 		},//End onToolDoubleClick
 
@@ -495,11 +456,10 @@ export function createDoor() {
       // Stop the interaction early if we cancel the by pressing Esc
       // Complete if Enter is Pressed
 		const [update, stop] = interaction_c;
-		const [updatel, stopl] = interaction_l;
+
 		
 		if (interaction_c&&KE.key=="Escape") {
 			stop();
-			stopl();	
 		}
 	  	  
 	   if (interaction_c&&KE.key=="Enter") {
@@ -515,12 +475,12 @@ export function createDoor() {
         // Make sure we stop the interaction so others
         // can interact with our new line
         stop();
-		stopl();		
+
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
-    },
+
+    },//end keydown
 	
   });//End Curve
 }//End Function
@@ -531,8 +491,8 @@ export function createDoor() {
 
 export function createSecretDoor() {
   let interaction_c= null;
-  let interaction_l=null;
   let currentPos = null;
+  let justclicked=false;
   
   OBR.tool.createMode({
     id: `${MyID}/modesecretdoor`,
@@ -550,7 +510,7 @@ export function createSecretDoor() {
 	
 	async onToolClick(context, event){
 
-	// Get the stroke color from the tools metadata
+	justclicked=true;
  
 	if (!interaction_c)
 	{
@@ -591,15 +551,7 @@ export function createSecretDoor() {
 		// Start an interaction with the new line
 		interaction_c = await OBR.interaction.startItemInteraction(curve);
 	 	 
-		// Build a line with the start and end position of our pointer
-		const line = buildLine()
-			.startPosition(currentPos)
-			.endPosition(currentPos)
-			.strokeColor(strokeColor_SD)
-			.strokeWidth(strokeWidth_SD)
-			.build();
-		// Start an interaction with the new line
-		interaction_l = await OBR.interaction.startItemInteraction(line);
+	
 		}
 		else
 		{
@@ -607,27 +559,29 @@ export function createSecretDoor() {
  			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
 
 			update((curve) => {
+				curve.points.pop();
 				curve.points.push(currentPos);
             });
-			
-		if (interaction_l) {
-			const [update] = interaction_l;
-			update((line) => {
-				line.startPosition = currentPos;
-				});
-			}
+
 		}
 },
 //---------------
     async onToolMove(_, event) {
       // Update the end position of the interaction when the tool drags
-      if (interaction_l) {
-        const [update] = interaction_l;
-        update((line) => {
-          line.endPosition = event.pointerPosition;
-				});
-			}
-		},//End onToolMove
+      if (interaction_c) {
+        const [update] = interaction_c;
+
+			update((curve) => {
+				if (justclicked==false)
+				{
+					curve.points.pop();
+				};
+				curve.points.push(event.pointerPosition);
+				justclicked=false;
+			});
+	  };
+			
+	},//End onToolMove
 
 //---------------
     async onToolDoubleClick(_, event) {
@@ -646,12 +600,9 @@ export function createSecretDoor() {
         // can interact with our new line
         stop();
 		
-	    const [updatel, stopl] = interaction_l;
-		stopl();		
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
 
 		},//End onToolDoubleClick
 
@@ -660,11 +611,10 @@ export function createSecretDoor() {
       // Stop the interaction early if we cancel the by pressing Esc
       // Complete if Enter is Pressed
 		const [update, stop] = interaction_c;
-		const [updatel, stopl] = interaction_l;
+
 		
 		if (interaction_c&&KE.key=="Escape") {
 			stop();
-			stopl();	
 		}
 	  	  
 	   if (interaction_c&&KE.key=="Enter") {
@@ -680,12 +630,12 @@ export function createSecretDoor() {
         // Make sure we stop the interaction so others
         // can interact with our new line
         stop();
-		stopl();		
+
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
-    },
+
+    },//end keydown
 	
   });//End Curve
 }//End Function
@@ -694,9 +644,9 @@ export function createSecretDoor() {
 
 export function createObstruction() {
   let interaction_c= null;
-  let interaction_l=null;
   let currentPos = null;
   let startPos=null;
+  let justclicked=false;
   
   OBR.tool.createMode({
     id: `${MyID}/modeobstruction`,
@@ -714,7 +664,7 @@ export function createObstruction() {
 	
 	async onToolClick(context, event){
 
-	// Get the stroke color from the tools metadata
+	justclicked=true;
  
 	if (!interaction_c)
 	{
@@ -757,14 +707,7 @@ export function createObstruction() {
 		interaction_c = await OBR.interaction.startItemInteraction(curve);
 	 	 
 		// Build a line with the start and end position of our pointer
-		const line = buildLine()
-			.startPosition(currentPos)
-			.endPosition(currentPos)
-			.strokeColor(strokeColor_Ob)
-			.strokeWidth(strokeWidth_Ob)
-			.build();
-		// Start an interaction with the new line
-		interaction_l = await OBR.interaction.startItemInteraction(line);
+
 		}
 		else
 		{
@@ -772,27 +715,29 @@ export function createObstruction() {
  			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
 
 			update((curve) => {
+				curve.points.pop();
 				curve.points.push(currentPos);
             });
 			
-		if (interaction_l) {
-			const [update] = interaction_l;
-			update((line) => {
-				line.startPosition = currentPos;
-				});
-			}
 		}
 },
 //---------------
     async onToolMove(_, event) {
       // Update the end position of the interaction when the tool drags
-      if (interaction_l) {
-        const [update] = interaction_l;
-        update((line) => {
-          line.endPosition = event.pointerPosition;
-				});
-			}
-		},//End onToolMove
+      if (interaction_c) {
+        const [update] = interaction_c;
+
+			update((curve) => {
+				if (justclicked==false)
+				{
+					curve.points.pop();
+				};
+				curve.points.push(event.pointerPosition);
+				justclicked=false;
+			});
+	  };
+			
+	},//End onToolMove
 
 //---------------
     async onToolDoubleClick(_, event) {
@@ -800,11 +745,10 @@ export function createObstruction() {
         const [update, stop] = interaction_c;
         // Perform a final update when the drag ends
         // This gets us the final line item
-
  			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
 
 			const curve = update((curve) => {
-				curve.points.push(currentPos,startPos);
+				curve.points.push(currentPos);
             });
         // Add the line to the scene
         OBR.scene.items.addItems([curve]);
@@ -812,12 +756,9 @@ export function createObstruction() {
         // can interact with our new line
         stop();
 		
-	    const [updatel, stopl] = interaction_l;
-		stopl();		
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
 
 		},//End onToolDoubleClick
 
@@ -826,11 +767,9 @@ export function createObstruction() {
       // Stop the interaction early if we cancel the by pressing Esc
       // Complete if Enter is Pressed
 		const [update, stop] = interaction_c;
-		const [updatel, stopl] = interaction_l;
 		
 		if (interaction_c&&KE.key=="Escape") {
 			stop();
-			stopl();	
 		}
 	  	  
 	   if (interaction_c&&KE.key=="Enter") {
@@ -847,11 +786,11 @@ export function createObstruction() {
         // Make sure we stop the interaction so others
         // can interact with our new line
         stop();
-		stopl();		
+	
       }
 	  
       interaction_c = null;
-	  interaction_l=null; 
+
     },
 	
   });//End Curve

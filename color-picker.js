@@ -11,51 +11,6 @@ OBR.onReady(async () => {
   // Get Tool Metadata if it exists
   const metadata = await OBR.tool.getMetadata(`${MyID}/tool`);
     
-/*   //Assign a Default value and override if a value was saved to metadata
-  let strokeColor_L = "red"; 
-  if (typeof metadata.strokeColor_L === "string") {
-    strokeColor_L = metadata.strokeColor_L;
-  }
-  
-  let strokeWidth_L = 8;
-  if (typeof metadata.strokeWidth_L ==="number") {
-    strokeWidth_L = metadata.strokeWidth_L;
-  }
-  
-   let strokeColor_W = "red"; 
-  if (typeof metadata.strokeColor_W === "string") {
-    strokeColor_W = metadata.strokeColor_W;
-  }
-  
-    let strokeWidth_W = 8;
-    if (typeof metadata.strokeWidth_W === "number") {
-    strokeWidth_W = metadata.strokeWidth_W;
-  }
-  
-    let strokeColor_D = "blue";
-    if (typeof metadata.strokeColor_D === "string") {
-    strokeColor_D = metadata.strokeColor_D;
-  }
-  
-    let strokeWidth_D = 8;
-    if (typeof metadata.strokeWidth_D === "number") {
-    strokeWidth_D = metadata.strokeWidth_D;
-  }
-  
-   let strokeColor_SD = "purple"; 
-    if (typeof metadata.strokeColor_SD === "string") {
-    strokeColor_SD = metadata.strokeColor_SD;
-  }
-  
-    let strokeWidth_SD = 8;
-    if (typeof metadata.strokeWidth_SD === "number") {
-    strokeWidth_SD = metadata.strokeWidth_SD;
-  } */
-  
-  //createSelect(strokeColor_L);
-  
- // setupSelect(document.querySelector("#colors"));
-    
 	//========================
 
 	 // Setup the document with the html button elements
@@ -158,7 +113,7 @@ async function setColor(a){
  async function onInput(e) {
 		
     const inputValue = parseInt((e.target).value);
-//console.log(inputValue);
+
 	const controlin=event.srcElement.id
 	
 	OBR.tool.setMetadata(`${MyID}/tool`, { strokeWidth_L: inputValue });
