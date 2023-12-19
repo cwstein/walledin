@@ -749,6 +749,7 @@ export function createObstruction() {
 
 			const curve = update((curve) => {
 				curve.points.push(currentPos);
+				curve.points.push(startPos);
             });
         // Add the line to the scene
         OBR.scene.items.addItems([curve]);
