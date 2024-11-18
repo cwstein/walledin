@@ -82,14 +82,16 @@ async onToolClick(context, event){
 				])
 			.tension(0)
 			.metadata({
-				["com.battle-system.smoke/isVisionLine"]: true ,
+				["com.battle-system.smoke/isVisionLine"]: false ,
+				["com.battle-system.smoke/isdoubleSided"]: true ,
+				["com.battle-system.smoke/blocking"]: true ,
 			})
 			.name("Vision Line (Line)")
 			.locked(true)
 			.strokeWidth(strokeWidth_L)
 			.fillOpacity(0)
 			.closed(false)
-			.visible(false)
+			.visible(true)
 			.strokeColor(strokeColor_L)
 			.build();
 
@@ -230,6 +232,8 @@ async onToolClick(context, event){
 			.tension(0)
 			.metadata({
 				["com.battle-system.smoke/isVisionLine"]: true ,
+				["com.battle-system.smoke/isdoubleSided"]: true ,
+				["com.battle-system.smoke/blocking"]: true ,
 			})
 			.name("Vision Line (Line)")
 			.locked(true)
@@ -384,6 +388,8 @@ export function createDoor() {
 			.metadata({
 				["com.battle-system.smoke/isVisionLine"]: true ,
 				["com.battle-system.smoke/isDoor"]: true ,
+				["com.battle-system.smoke/isdoubleSided"]: true ,
+				["com.battle-system.smoke/blocking"]: true ,
 			})
 			.name("Vision Line (Line)")
 			.locked(true)
@@ -538,6 +544,8 @@ export function createSecretDoor() {
 			.metadata({
 				["com.battle-system.smoke/isVisionLine"]: true ,
 				["com.battle-system.smoke/isDoor"]: true ,
+				["com.battle-system.smoke/isdoubleSided"]: true ,
+				["com.battle-system.smoke/blocking"]: true ,
 			})
 			.name("Vision Line (Line)")
 			.locked(true)
@@ -693,6 +701,8 @@ export function createObstruction() {
 			.tension(0)
 			.metadata({
 				["com.battle-system.smoke/isVisionLine"]: true ,
+				["com.battle-system.smoke/isdoubleSided"]: true ,
+				["com.battle-system.smoke/blocking"]: true ,
 			})
 			.name("Vision Line (Polygon)")
 			.locked(true)
