@@ -28,7 +28,9 @@ export function createTool() {
 	  strokeColor_D: "green",
 	  strokeWidth_D: 8,
 	  strokeColor_SD: "purple",
-      strokeWidth_SD: 8,
+      	  strokeWidth_SD: 8,
+	  strokeColor_W: "orange",
+      	  strokeWidth_W: 8,
     },
 
   });
@@ -543,7 +545,7 @@ export function createSecretDoor() {
 			.tension(0)
 			.metadata({
 				["com.battle-system.smoke/isVisionLine"]: true ,
-				["com.battle-system.smoke/isDoor"]: true ,
+				//["com.battle-system.smoke/isDoor"]: true ,
 				["com.battle-system.smoke/doubleSided"]: true ,
 				["com.battle-system.smoke/blocking"]: true ,
 			})
@@ -647,6 +649,168 @@ export function createSecretDoor() {
 	
   });//End Curve
 }//End Function
+
+
+
+/* ================================== */
+
+
+export function createWindow() {
+  let interaction_c= null;
+  let currentPos = null;
+  let justclicked=false;
+  
+  OBR.tool.createMode({
+    id: `${MyID}/modewindow`,
+    icons: [
+      {
+        icon: "/secretdoor_cb.png",
+        label: "Window",
+        filter: {
+          activeTools: [`${MyID}/tool`],
+        },
+      },
+    ],
+	
+	
+	
+	async onToolClick(context, event){
+
+	justclicked=true;
+ 
+	if (!interaction_c)
+	{
+		let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
+
+			// Get Tool Metadata if it exists
+			const metadata_tool =  await OBR.tool.getMetadata(`${MyID}/tool`);
+					
+		   let strokeColor_SD = "orange"; 
+		  if (typeof metadata_tool.strokeColor_SD === "string") {
+			strokeColor_SD = metadata_tool.strokeColor_SD;
+		  }
+		  
+			let strokeWidth_SD = 8;
+			if (typeof metadata_tool.strokeWidth_SD === "number") {
+			strokeWidth_SD = metadata_tool.strokeWidth_SD;
+			}
+		// Build a line with the position of our pointer
+		const curve = buildCurve()
+			.points
+				([
+				currentPos,
+				])
+			.tension(0)
+			.metadata({
+				["com.battle-system.smoke/isVisionLine"]: true ,
+				//["com.battle-system.smoke/isWindow"]: true ,
+				["com.battle-system.smoke/doubleSided"]: true ,
+				["com.battle-system.smoke/blocking"]: true ,
+			})
+			.name("Vision Line (Line)")
+			.locked(true)
+			.strokeWidth(strokeWidth_SD)
+			.fillOpacity(0)
+			.closed(false)
+			.visible(false)
+			.strokeColor(strokeColor_SD)
+			.build();
+
+		// Start an interaction with the new line
+		interaction_c = await OBR.interaction.startItemInteraction(curve);
+	 	 
+	
+		}
+		else
+		{
+			const [update] = interaction_c;
+ 			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
+
+			update((curve) => {
+				curve.points.pop();
+				curve.points.push(currentPos);
+            });
+
+		}
+},
+//---------------
+    async onToolMove(_, event) {
+      // Update the end position of the interaction when the tool drags
+      if (interaction_c) {
+        const [update] = interaction_c;
+
+			update((curve) => {
+				if (justclicked==false)
+				{
+					curve.points.pop();
+				};
+				curve.points.push(event.pointerPosition);
+				justclicked=false;
+			});
+	  };
+			
+	},//End onToolMove
+
+//---------------
+    async onToolDoubleClick(_, event) {
+      if (interaction_c) {
+        const [update, stop] = interaction_c;
+        // Perform a final update when the drag ends
+        // This gets us the final line item
+ 			let currentPos =  await OBR.scene.grid.snapPosition(event.pointerPosition);
+
+			const curve = update((curve) => {
+				curve.points.push(currentPos);
+            });
+        // Add the line to the scene
+        OBR.scene.items.addItems([curve]);
+        // Make sure we stop the interaction so others
+        // can interact with our new line
+        stop();
+		
+      }
+	  
+      interaction_c = null;
+
+		},//End onToolDoubleClick
+
+//---------------
+    async onKeyDown(_,KE) {
+      // Stop the interaction early if we cancel the by pressing Esc
+      // Complete if Enter is Pressed
+		const [update, stop] = interaction_c;
+
+		
+		if (interaction_c&&KE.key=="Escape") {
+			stop();
+		}
+	  	  
+	   if (interaction_c&&KE.key=="Enter") {
+
+        // Perform a final update when the drag ends
+        // This gets us the final line item
+
+		const curve = update((curve) => {
+
+            });
+        // Add the line to the scene
+        OBR.scene.items.addItems([curve]);
+        // Make sure we stop the interaction so others
+        // can interact with our new line
+        stop();
+
+      }
+	  
+      interaction_c = null;
+
+    },//end keydown
+	
+  });//End Curve
+}//End Function
+
+/* ================================== */
+
+
 
 /* ================================== */
 
