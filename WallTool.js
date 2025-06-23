@@ -686,12 +686,12 @@ export function createWindow() {
 			const metadata_tool =  await OBR.tool.getMetadata(`${MyID}/tool`);
 					
 		   let strokeColor_SD = "orange"; 
-		  if (typeof metadata_tool.strokeColor_SD === "string") {
+		  if (typeof metadata_tool.strokeColor_W === "string") {
 			strokeColor_SD = metadata_tool.strokeColor_SD;
 		  }
 		  
 			let strokeWidth_SD = 8;
-			if (typeof metadata_tool.strokeWidth_SD === "number") {
+			if (typeof metadata_tool.strokeWidth_W === "number") {
 			strokeWidth_SD = metadata_tool.strokeWidth_SD;
 			}
 		// Build a line with the position of our pointer
