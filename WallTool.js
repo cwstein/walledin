@@ -664,7 +664,7 @@ export function createWindow() {
     id: `${MyID}/modewindow`,
     icons: [
       {
-        icon: "/secretdoor_cb.png",
+        icon: "/window_cb.png",
         label: "Window",
         filter: {
           activeTools: [`${MyID}/tool`],
