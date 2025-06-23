@@ -29,8 +29,8 @@ export function createTool() {
 	  strokeWidth_D: 8,
 	  strokeColor_SD: "purple",
       	  strokeWidth_SD: 8,
-	  strokeColor_W: "orange",
-      	  strokeWidth_W: 8,
+	  strokeColor_Win: "orange",
+      	  strokeWidth_Win: 8,
     },
 
   });
@@ -685,14 +685,14 @@ export function createWindow() {
 			// Get Tool Metadata if it exists
 			const metadata_tool =  await OBR.tool.getMetadata(`${MyID}/tool`);
 					
-		   let strokeColor_W = "orange"; 
-		  if (typeof metadata_tool.strokeColor_W === "string") {
-			strokeColor_W = metadata_tool.strokeColor_W;
+		   let strokeColor_Win = "orange"; 
+		  if (typeof metadata_tool.strokeColor_Win === "string") {
+			strokeColor_Win = metadata_tool.strokeColor_Win;
 		  }
 		  
-			let strokeWidth_W = 8;
-			if (typeof metadata_tool.strokeWidth_W === "number") {
-			strokeWidth_W = metadata_tool.strokeWidth_W;
+			let strokeWidth_Win = 8;
+			if (typeof metadata_tool.strokeWidth_Win === "number") {
+			strokeWidth_Win = metadata_tool.strokeWidth_Win;
 			}
 		// Build a line with the position of our pointer
 		const curve = buildCurve()
