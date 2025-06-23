@@ -685,14 +685,14 @@ export function createWindow() {
 			// Get Tool Metadata if it exists
 			const metadata_tool =  await OBR.tool.getMetadata(`${MyID}/tool`);
 					
-		   let strokeColor_SD = "orange"; 
+		   let strokeColor_W = "orange"; 
 		  if (typeof metadata_tool.strokeColor_W === "string") {
-			strokeColor_SD = metadata_tool.strokeColor_SD;
+			strokeColor_W = metadata_tool.strokeColor_W;
 		  }
 		  
-			let strokeWidth_SD = 8;
+			let strokeWidth_W = 8;
 			if (typeof metadata_tool.strokeWidth_W === "number") {
-			strokeWidth_SD = metadata_tool.strokeWidth_SD;
+			strokeWidth_SD = metadata_tool.strokeWidth_W;
 			}
 		// Build a line with the position of our pointer
 		const curve = buildCurve()
@@ -709,11 +709,11 @@ export function createWindow() {
 			})
 			.name("Vision Line (Line)")
 			.locked(true)
-			.strokeWidth(strokeWidth_SD)
+			.strokeWidth(strokeWidth_W)
 			.fillOpacity(0)
 			.closed(false)
 			.visible(false)
-			.strokeColor(strokeColor_SD)
+			.strokeColor(strokeColor_W)
 			.build();
 
 		// Start an interaction with the new line
