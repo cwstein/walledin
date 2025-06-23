@@ -692,7 +692,7 @@ export function createWindow() {
 		  
 			let strokeWidth_W = 8;
 			if (typeof metadata_tool.strokeWidth_W === "number") {
-			strokeWidth_SD = metadata_tool.strokeWidth_W;
+			strokeWidth_W = metadata_tool.strokeWidth_W;
 			}
 		// Build a line with the position of our pointer
 		const curve = buildCurve()
@@ -703,7 +703,7 @@ export function createWindow() {
 			.tension(0)
 			.metadata({
 				["com.battle-system.smoke/isVisionLine"]: true ,
-				//["com.battle-system.smoke/isWindow"]: true ,
+				["com.battle-system.smoke/isWindow"]: true ,
 				["com.battle-system.smoke/doubleSided"]: true ,
 				["com.battle-system.smoke/blocking"]: true ,
 			})
