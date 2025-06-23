@@ -709,11 +709,11 @@ export function createWindow() {
 			})
 			.name("Vision Line (Line)")
 			.locked(true)
-			.strokeWidth(strokeWidth_W)
+			.strokeWidth(strokeWidth_Win)
 			.fillOpacity(0)
 			.closed(false)
 			.visible(false)
-			.strokeColor(strokeColor_W)
+			.strokeColor(strokeColor_Win)
 			.build();
 
 		// Start an interaction with the new line
