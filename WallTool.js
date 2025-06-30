@@ -710,6 +710,7 @@ export function createWindow() {
 			.name("Vision Line (Line)")
 			.locked(true)
 			.strokeWidth(strokeWidth_Win)
+			.strokeDash([20,20])
 			.fillOpacity(0)
 			.closed(false)
 			.visible(false)
